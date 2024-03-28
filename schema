@@ -1,0 +1,29 @@
+column_names = ['election_date', 'election_type', 'voter_id', 'tmp1', 'tmp2', 'tmp3', 'tmp4', 'tmp5', 'tmp6', 'tmp7', 'tmp8', 'zip', 'city', 'party_affiliation', 'tmp9', 'tmp10', 'ward', 'precinct', 'voter_status', 'tmp11', 'tmp12', 'tmp13', 'tmp14', 'tmp15', 'tmp16']
+
+schema = {
+  'election_date': 'datetime',
+  'election_type': 'object',
+  'voter_id': 'object',
+  'tmp1': 'object',
+  'tmp2': 'object',
+  'tmp3': 'object',
+  'tmp4': 'object',
+  'tmp5': 'object',
+  'tmp6': 'object',
+  'tmp7': 'object',
+  'tmp8': 'object',
+  'zip': 'object',
+  'city': 'object',
+  'party_affiliation': 'object',
+  'tmp9': 'object',
+  'tmp10 ': 'object',
+  'ward': 'object',
+  'precinct': 'object',
+  'voter_status': 'object',
+  'tmp11': 'object',
+  'tmp12': 'object',
+  'tmp13': 'object',
+  'tmp14': 'object',
+  'tmp15': 'object',
+  'tmp16': 'object'
+}
