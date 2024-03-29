@@ -1,6 +1,6 @@
 The problem addressed by this project is to survey voter activity going back 30 years and to find patterns of changes in voter behavior in that time.
 
-The dataset that I'm using consists of all voter activity in the state of Massachusetts for the range 1996 to 2022. The data is on a CD that was sent to me by the office of the Secretary of State. I had instructions to not share the data, so what I've done is stripped out the names and addresses of the voters.
+The dataset that I'm using consists of all voter activity in the state of Massachusetts for the range 1996 to 2022. The data is on a CD that was sent to me by the office of the Secretary of State. I had instructions to not share the data, so what I've done is stripped out the names and addresses of the voters. However this means that nobody else has access to the data, so you'll have to read this file and check the jupyter notebook and dbt files for reproducibility.
 
 The voter activity in question consists of which elections and which primaries each voter voted in. So one voter could appear many times in the data if they voted in more than one election in that time.
 
