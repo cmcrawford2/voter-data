@@ -27,3 +27,34 @@ schema = {
   'tmp15': 'object',
   'tmp16': 'object'
 }
+
+schema = {
+  'city_code': 'float64',
+  'city_name': 'object',
+  'county_name': 'object',
+  'voter_id': 'object',
+  'tmp1': 'object',
+  'tmp2': 'object',
+  'tmp3': 'object',
+  'tmp4': 'object',
+  'tmp5': 'object',
+  'tmp6': 'object',
+  'tmp7': 'object',
+  'tmp8': 'object',
+  'zip': 'object',
+  'tmp9': 'object',
+  'tmp10': 'object',
+  'tmp11': 'object',
+  'tmp12': 'object',
+  'tmp13': 'object',
+  'party_affiliation': 'object'
+  'tmp14': 'object',
+  'tmp15': 'object',
+  'tmp16': 'object',
+  'ward': 'object',
+  'precinct': 'object',
+  'congressional_district': 'int32',
+  'senatorial_district': 'int32',
+  'state_rep_district': 'int32',
+  'voter_status': 'object'
+}
