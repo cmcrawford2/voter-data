@@ -1,2 +1,5 @@
 extracted_files/*
 temp.zip
+target/
+dbt_packages/
+logs/
