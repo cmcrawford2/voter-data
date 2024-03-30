@@ -3,3 +3,4 @@ temp.zip
 target/
 dbt_packages/
 logs/
+dbt_modules/
