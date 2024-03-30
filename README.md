@@ -14,3 +14,5 @@ The pipeline I used to move the data into the data lake had to be manual, due to
 
 Once I had that data in Google cloud storage, I unzipped the file and extracted 351 text files, which represent the 351 cities and towns in Massachusetts. I used a python notebook to read the files and do the initial transformation into parquet files in the same Google cloud storage bucket.
 
+In BigQuery, I created two tables: the first was an external table and the second was a materialized table.
+
