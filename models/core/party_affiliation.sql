@@ -3,7 +3,8 @@
 -- Define a seed model for party affiliations
 {{ config(materialized='table') }}
 
-select
-    'Code' as code,
-    'Party or Designation Name' as party_name
-from {{ ref('PartyDesignationCodes') }}
+SELECT
+    Code AS code,
+    `Party or Designation Name` AS party_name
+FROM {{ ref('PartyDesignationCodes') }}
+
