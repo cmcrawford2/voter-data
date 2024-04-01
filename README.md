@@ -1,6 +1,6 @@
 # Massachusetts voter data project
 
-The problem addressed by this project is to survey all voter activity in Massachusetts going back 30 years, and to find trends among parties other than Democrat or Republican. The data consists of two main files: first, the list of all registered voters on the date the file was made - about 4 million; then, the list of voter activity. This includes all the elections that any registered voter voted in, going back 30 years. This file is much bigger, over 10G with about 40 million records.
+The problem addressed by this project is to survey all voter activity in Massachusetts going back 30 years, and to find trends among parties other than Democrat or Republican. The data consists of two main files: first, the list of all registered voters on the date the file was made - about 4 million; then, the list of voter activity. This includes all the elections that any registered voter voted in, going back 30 years. This file is much bigger, over 10G with over 80 million records.
 
 This dataset is proprietary. For this project, I removed the names and addresses of the voters before I made any tables.
 
