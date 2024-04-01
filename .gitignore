@@ -1,5 +1,7 @@
-extracted_files/*
+extracted_files/
+extracted_voter/
 temp.zip
+temp2.zip
 target/
 dbt_packages/
 logs/
