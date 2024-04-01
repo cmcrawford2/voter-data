@@ -16,12 +16,45 @@ The next step was to unzip the files and write parquet files into the GCP bucket
 
 To move the data from the data lake to the data warehouse, I used a combination of queries in BigQuery to create the raw data files, and DBT. In DBT, I created two staging files which were copies of the raw data with a date transformation on the voter activity file. Some of the dates were in mm/dd/yy format and others were in mm/dd/yyyy format. I converted them all to a timestamp.
 
-Then to prepare the data for the dashboard, I used dbt to create tables from the two staging files. The first file joined a table where the party affiliations were spelled out with the main file, where they were just encoded with one or two letters. Then once that was done, I created other tables that were convenient for presenting the data that I wanted to present in Google Looker studio.
+```sql
+CREATE OR REPLACE EXTERNAL TABLE `voter_data.external_voter_data`
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://cris-voter-data/output/*.parquet']
+);
 
-Finally, I created two files in Google Looker Studio. You can see these here:
+select count(*) from `voter_data.external_voter_data`;
 
+SELECT DISTINCT election_type FROM `voter_data.external_voter_data`;
 
+CREATE OR REPLACE TABLE `voter_data.materialized_voter_data` AS
+SELECT *
+FROM `voter_data.external_voter_data`;
 
+select count(*) from voter_data.materialized_voter_data;
 
+CREATE OR REPLACE EXTERNAL TABLE `voter_data.external_voters`
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://cris-voter-data/voter_output/*.parquet']
+);
 
+select count(*) from voter_data.external_voters;
 
+CREATE OR REPLACE TABLE voter_data.materialized_voters
+PARTITION BY RANGE_BUCKET(city_code, GENERATE_ARRAY(1,351,27))
+AS
+SELECT *
+FROM voter_data.external_voters;
+
+select count(*) from `voter_data.materialized_voters`;
+```
+
+Then to prepare the data for the dashboard, I used dbt to create tables from the two staging files. The first file joined a table where the party affiliations were spelled out with the main file, where they were just encoded with one or two letters. Then once that was done, I created other tables that were convenient for presenting the data that I wanted to present in Google Looker studio. The second table only needed to be a count of the registered voters of each party affiliation in the 351 towns of Massachusetts.
+
+![Lineage of voter election data](https://github.com/cmcrawford2/voter-data/blob/main/assets/dbt_lineage.png)
+![Lineage of voter registration data](https://github.com/cmcrawford2/voter-data/blob/main/assets/voter_lineage.png)
+
+Finally, I created two files in Google Looker Studio. You can see these here - the copies are fully editable so you can also see the data that I didn't use in the charts.
+[Cities and towns in Massachusetts with the highest and lowest percentage of voters registered as libertarian as of August 2022](https://lookerstudio.google.com/u/0/reporting/5a51805c-6f4b-4790-8cc7-812f6f8466d5/page/oE4uD/edit)
+[Third party voters voting in Massachusetts state elections for President and Governor](https://lookerstudio.google.com/u/0/reporting/9d9c2220-430f-429c-b120-46a187b22ab0/page/2RzuD/edit)
