@@ -1,18 +1,25 @@
-The problem addressed by this project is to survey voter activity going back 30 years and to find patterns of changes in voter behavior in that time.
+The problem addressed by this project is to survey all voter activity in Massachusetts going back 30 years, and to find trends among parties other than Democrat or Republican. The data consists of two main files: first, the list of all registered voters on the date the file was made - about 4 million; then, the list of voter activity. This includes all the elections that any registered voter voted in, going back 30 years. This file is much bigger, over 10G with about 40 million records.
 
-The dataset that I'm using consists of all voter activity in the state of Massachusetts for the range 1996 to 2022. The data is on a CD that was sent to me by the office of the Secretary of State. I had instructions to not share the data, so what I've done is stripped out the names and addresses of the voters. However this means that nobody else has access to the data, so you'll have to read this file and check the jupyter notebook and dbt files for reproducibility.
+This dataset is proprietary. For this project, I removed the names and addresses of the voters before I made any tables.
 
-The voter activity in question consists of which elections and which primaries each voter voted in. So one voter could appear many times in the data if they voted in more than one election in that time.
+The datasets that I'm using consist of all voter activity in the state of Massachusetts for the range 1996 to 2022, plus the list of registered voters as of August, 2022. The data is on a CD that was sent to me by the office of the Secretary of State.
 
-* Selecting a dataset of interest (see [Datasets](#datasets))
-* Creating a pipeline for processing this dataset and putting it to a datalake
-* Creating a pipeline for moving the data from the lake to a data warehouse
-* Transforming the data in the data warehouse: prepare it for the dashboard
-* Building a dashboard to visualize the data
+The voter activity in question consists of which elections--municipal and state, primaries and general elections--each voter voted in. So one voter could appear many times in the data if they voted in more than one election in the last 30 years.
 
-The pipeline I used to move the data into the data lake had to be manual, due to the nature of the data. First of all, it was on a CD. I only have one old computer that can read a CD, and the browsers on that computer are unsupported by Google cloud. So I had to read the CD on that computer and put the data onto a USB drive. Then I could move the data from the USB drive to a Google cloud storage bucket from another computer.
+The pipeline starts with extracting the data from the CD. I have a laptop that can read a CD, but it has an old operating system. The browsers are not compatible with Google cloud. So the first step was to read the data from the CD onto a USB drive. Then I used another computer to put the zip files into a GCP bucket.
 
-Once I had that data in Google cloud storage, I unzipped the file and extracted 351 text files, which represent the 351 cities and towns in Massachusetts. I used a python notebook to read the files and do the initial transformation into parquet files in the same Google cloud storage bucket.
 
-In BigQuery, I created two tables: the first was an external table and the second was a materialized table.
+
+The next step was to unzip the files and write parquet files into the GCP bucket. I used two jupyter notebooks to do this, one for each file. They are voter-data.ipynb for the large file and voters.ipynb for the smaller file.
+
+To move the data from the data lake to the data warehouse, I used a combination of queries in BigQuery to create the raw data files, and DBT. In DBT, I created two staging files which were copies of the raw data with a date transformation on the voter activity file. Some of the dates were in mm/dd/yy format and others were in mm/dd/yyyy format. I converted them all to a timestamp.
+
+Then to prepare the data for the dashboard, I used dbt to create tables from the two staging files. The first file joined a table where the party affiliations were spelled out with the main file, where they were just encoded with one or two letters. Then once that was done, I created other tables that were convenient for presenting the data that I wanted to present in Google Looker studio.
+
+Finally, I created two files in Google Looker Studio. You can see these here:
+
+
+
+
+
 
