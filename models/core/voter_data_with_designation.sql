@@ -1,13 +1,14 @@
 -- File: models/state_elections_with_designations.sql
 
 -- Define a model to filter state elections in early November and join them with voter designations
-{{ config(materialized='view') }}
+{{ config(materialized='table') }}
 
 WITH state_elections AS (
     -- Filter data to include only state elections in early November
     SELECT *
     FROM {{ ref('staging_voter_data') }}
     WHERE election_type = 'STATE ELECTION'
+      AND MOD(EXTRACT(YEAR FROM formatted_datetime), 2) = 0
       AND EXTRACT(MONTH FROM formatted_datetime) = 11
       AND EXTRACT(DAY FROM formatted_datetime) < 10
 ),
