@@ -8,11 +8,15 @@ The datasets that I'm using consist of all voter activity in the state of Massac
 
 The voter activity in question consists of which elections--municipal and state, primaries and general elections--each voter voted in. So one voter could appear many times in the data if they voted in more than one election in the last 30 years.
 
+### Pipeline from raw data to Google cloud bucket
+
 The pipeline starts with extracting the data from the CD. I have a laptop that can read a CD, but it has an old operating system. The browsers are not compatible with Google cloud. So the first step was to read the data from the CD onto a USB drive. Then I used another computer to put the zip files into a GCP bucket.
 
 ![CD to cloud pipeline image](https://github.com/cmcrawford2/voter-data/blob/main/assets/CD_to_cloud.png)
 
 The next step was to unzip the files and write parquet files into the GCP bucket. I used two jupyter notebooks to do this, one for each file. They are [voter-data.ipynb](https://github.com/cmcrawford2/voter-data/blob/main/voter-data.ipynb) for the large file and [voters.ipynb](https://github.com/cmcrawford2/voter-data/blob/main/voters.ipynb) for the smaller file.
+
+### Pipeline from data lake to data warehouse
 
 To move the data from the data lake to the data warehouse, I used a combination of queries in BigQuery to create the raw data files, and DBT. In DBT, I created two staging files which were copies of the raw data with a date transformation on the voter activity file. Some of the dates were in mm/dd/yy format and others were in mm/dd/yyyy format. I converted them all to a timestamp.
 
@@ -50,11 +54,17 @@ FROM voter_data.external_voters;
 select count(*) from `voter_data.materialized_voters`;
 ```
 
+### Preparing the data for the dashboard
+
 Then to prepare the data for the dashboard, I used dbt to create tables from the two staging files. The first file joined a table where the party affiliations were spelled out with the main file, where they were just encoded with one or two letters. Then once that was done, I created other tables that were convenient for presenting the data that I wanted to present in Google Looker studio. The second table only needed to be a count of the registered voters of each party affiliation in the 351 towns of Massachusetts.
+
+The files are in models/staging and models/core at the top level of this repository.
 
 ![Lineage of voter election data](https://github.com/cmcrawford2/voter-data/blob/main/assets/dbt_lineage.png)
 ![Lineage of voter registration data](https://github.com/cmcrawford2/voter-data/blob/main/assets/voter_lineage.png)
 
-Finally, I created two files in Google Looker Studio. You can see these here - the copies are fully editable so you can also see the data that I didn't use in the charts.
-[Cities and towns in Massachusetts with the highest and lowest percentage of voters registered as libertarian as of August 2022](https://lookerstudio.google.com/u/0/reporting/5a51805c-6f4b-4790-8cc7-812f6f8466d5/page/oE4uD/edit)
+### Visualization of the data
+
+Finally, I created two files in Google Looker Studio. You can see these here - the copies are fully editable so you can also see the data that I didn't use in the charts. They are: 
+[Cities and towns in Massachusetts with the highest and lowest percentage of voters registered as libertarian as of August 2022](https://lookerstudio.google.com/u/0/reporting/5a51805c-6f4b-4790-8cc7-812f6f8466d5/page/oE4uD/edit) and 
 [Third party voters voting in Massachusetts state elections for President and Governor](https://lookerstudio.google.com/u/0/reporting/9d9c2220-430f-429c-b120-46a187b22ab0/page/2RzuD/edit)
