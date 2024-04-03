@@ -1,0 +1,91 @@
+version: 1
+
+sources:
+  - name: staging
+    database: data-engineering-2024-411821
+    schema: voter_data
+    tables:
+      - name: materialized_voter_data
+      - name: materialized_voters
+
+models:
+    - name: staging_voter_data
+      description: >
+        Data for each election that each voter voted in in Massachusetts from 1996 to 2022.
+        Names and addresses have been removed. One voter can appear many times if they have voted in
+        more than one election.
+      columns:
+          - name: election_date
+            description: date of election
+            tests:
+              - not_null:
+                  severity: warn
+          - name: election_type
+            description: local (municipal) election, state primary, presidential primary, state election
+            tests:
+              - not_null:
+                  severity: warn
+          - name: voter_id
+            description: id of voter, matches id in registered voter table
+            tests:
+              - not_null:
+                  severity: warn
+          - name: zip
+            description: zip code of voter
+          - name: city
+            description: city or town of voter at the time of election
+            tests:
+              - not_null:
+                  severity: warn
+          - name: party_affiliation
+            description: party affiliation of the voter. Can be unenrolled, a party, or a designation.
+            tests:
+              - not_null:
+                  severity: warn
+          - name: ward
+            description: ward number
+          - name: precinct
+            description: precinct number
+          - name: voter_status
+            description: status of voter, active or inactive
+
+    - name: staging_registered_voters
+      description: > 
+        One row for each registered voter, as of August 29, 2022.
+      columns:
+          - name: city_code
+            description: numerical code for city or town
+            tests:
+              - not_null:
+                  severity: warn
+          - name: city_name
+            description: name of city or town
+            tests:
+              - not_null:
+                  severity: warn
+          - name: county_name
+            description: name of county
+            tests:
+              - not_null:
+                  severity: warn
+          - name: voter_id
+            description: id of voter, matches id in voter activity table
+            tests:
+              - not_null:
+                  severity: warn
+          - name: zip
+            description: zip code of voter
+          - name: party_affiliation
+            description: party affiliation of the voter. Can be unenrolled, a party, or a designation.
+            tests:
+              - not_null:
+                  severity: warn
+          - name: ward
+            description: ward number
+          - name: precinct
+            description: precinct number
+          - name: congressional_district
+          - name: senatorial_district
+          - name: state_rep_district,
+          - name: voter_status
+            description: status of voter, active or inactive
