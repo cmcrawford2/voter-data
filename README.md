@@ -98,6 +98,10 @@ You can see these here - the copies are fully editable so you can also examine t
 
 For the third party voters in Massachusetts, I created a quick filter that excludes 'D', 'R', and 'U'. **You may have to put this filter back, as it sometimes doesn't persist in looker studio.** To do this, go to "quick filter" in the filter bar above the charts (make sure you have it enabled in edit mode by choosing the "filter bar" button on the right-hand side). Select party_affiliation, and remove 'D', 'R', and 'U'. Then apply the filter.
 
+Here are pictures of the charts:
+![Bar charts of registered libertarians](https://github.com/cmcrawford2/voter-data/blob/main/assets/registered_libertarians.png)
+![Bar chart of third party voters](https://github.com/cmcrawford2/voter-data/blob/main/assets/third_party_voters.png)
+
 ### Reproducibility
 
 My cloud environment is private, as is my dbt IDE. I have the free version of the dbt IDE, which prohibits me from adding team members. However, by inspecting the files, you can see every step of the process. I should be able to reproduce the entire run with a new CD from the Secretary of State's office, which I've applied for. You can look at the data in Google looker studio. I've allowed public editing access. Just don't delete any of the tables!
